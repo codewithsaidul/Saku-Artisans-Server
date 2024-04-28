@@ -60,7 +60,7 @@ async function run() {
         // get the all data of arts & craft items by email
         app.get('/myCraft/:email', async(req, res) => {
             const email = req.params.email
-            const query = { userEmail: email}
+            const query = { email: email}
             const result = await craftCollection.find(query).toArray();
             res.send(result)
         })
@@ -81,6 +81,14 @@ async function run() {
 
         })
 
+
+        // delete craft item data
+        app.delete('/allCraftItems/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await craftCollection.deleteOne(query);
+            res.send(result)
+        })
 
 
         // Send a ping to confirm a successful connection
