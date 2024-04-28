@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 require('dotenv').config()
 
@@ -47,6 +47,17 @@ async function run() {
             res.send(result)
         })
 
+
+        // get the single arts & craft items data by id
+        app.get('/allCraftItems/:id', async(req, res) => {
+            const id = req.params.id
+            console.log(id)
+
+            const query = { _id: new ObjectId(id)}
+            const result = await craftCollection.findOne(query);
+            res.send(result)
+        })
+
         // Send User Information to Database 
         app.post('/users', async(req, res) => {
             const users = req.body;
@@ -58,6 +69,7 @@ async function run() {
         app.post("/allCraftItems", async(req, res) => {
             const craftItems = req.body;
             const result = await craftCollection.insertOne(craftItems);
+
             res.send(result)
 
         })
