@@ -17,7 +17,6 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lggjuua.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 
-console.log(uri)
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -32,12 +31,38 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
+
+
+
+        // collection for a storing user
+        const userCollection = client.db('sakuArtisansDB').collection('users')
+
+        // collection for a storing arts & craft items
+        const craftCollection = client.db('sakuArtisansDB').collection('artsCraftItems')
+
+        // Send User Information to Database 
+        app.post('/users', async(req, res) => {
+            const users = req.body;
+            const result = await userCollection.insertOne(users);
+            res.send(result)
+        })
+
+        // Send Data to Database
+        app.post("/allCraftItems", async(req, res) => {
+            const craftItems = req.body;
+            const result = await craftCollection.insertOne(craftItems);
+            res.send(result)
+
+        })
+
+
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
