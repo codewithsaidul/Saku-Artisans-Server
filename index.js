@@ -40,6 +40,13 @@ async function run() {
         // collection for a storing arts & craft items
         const craftCollection = client.db('sakuArtisansDB').collection('artsCraftItems')
 
+
+        // get the all data of arts & craft items
+        app.get('/allCraftItems', async(req, res) => {
+            const result = await craftCollection.find().toArray();
+            res.send(result)
+        })
+
         // Send User Information to Database 
         app.post('/users', async(req, res) => {
             const users = req.body;
