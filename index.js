@@ -51,10 +51,17 @@ async function run() {
         // get the single arts & craft items data by id
         app.get('/allCraftItems/:id', async(req, res) => {
             const id = req.params.id
-            console.log(id)
-
             const query = { _id: new ObjectId(id)}
             const result = await craftCollection.findOne(query);
+            res.send(result)
+        })
+
+
+        // get the all data of arts & craft items by email
+        app.get('/myCraft/:email', async(req, res) => {
+            const email = req.params.email
+            const query = { userEmail: email}
+            const result = await craftCollection.find(query).toArray();
             res.send(result)
         })
 
