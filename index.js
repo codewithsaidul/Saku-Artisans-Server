@@ -30,7 +30,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
 
 
@@ -39,6 +39,9 @@ async function run() {
 
         // collection for a storing arts & craft items
         const craftCollection = client.db('sakuArtisansDB').collection('artsCraftItems')
+
+        // category collection
+        const craftCategory = client.db('sakuArtisansDB').collection('craftCategory')
 
 
         // get the all data of arts & craft items
@@ -58,13 +61,13 @@ async function run() {
         })
 
         // get the single arts & craft items data by id
-        app.get('/craftItemsCategory/:subCategory', async(req, res) => {
-            const category = req.params.subCategory
+        // app.get('/allCraftItems/craftItemsCategory/:subCategory', async(req, res) => {
+        //     const category = req.params.subCategory
             
-            const query = { subCategory: category}
-            const result = await craftCollection.find(query).toArray();
-            res.send(result)
-        })
+        //     const query = { subCategory: category}
+        //     const result = await craftCollection.find(query).toArray();
+        //     res.send(result)
+        // })
 
 
         // get the all data of arts & craft items by email
@@ -72,6 +75,12 @@ async function run() {
             const email = req.params.email
             const query = { email: email}
             const result = await craftCollection.find(query).toArray();
+            res.send(result)
+        })
+
+        // get the category data from another collection
+        app.get('/craftCategory', async(req, res) => {
+            const result = await craftCategory.find().toArray();
             res.send(result)
         })
 
