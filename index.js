@@ -61,13 +61,13 @@ async function run() {
         })
 
         // get the single arts & craft items data by id
-        // app.get('/allCraftItems/craftItemsCategory/:subCategory', async(req, res) => {
-        //     const category = req.params.subCategory
+        app.get('/allCraftItems/craftItemsCategory/:subCategory', async(req, res) => {
+            const category = req.params.subCategory
             
-        //     const query = { subCategory: category}
-        //     const result = await craftCollection.find(query).toArray();
-        //     res.send(result)
-        // })
+            const query = { subCategory: category}
+            const result = await craftCollection.find(query).toArray();
+            res.send(result)
+        })
 
 
         // get the all data of arts & craft items by email
