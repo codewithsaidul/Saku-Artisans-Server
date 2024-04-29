@@ -51,8 +51,18 @@ async function run() {
         // get the single arts & craft items data by id
         app.get('/allCraftItems/:id', async(req, res) => {
             const id = req.params.id
+            console.log(id)
             const query = { _id: new ObjectId(id)}
             const result = await craftCollection.findOne(query);
+            res.send(result)
+        })
+
+        // get the single arts & craft items data by id
+        app.get('/craftItemsCategory/:subCategory', async(req, res) => {
+            const category = req.params.subCategory
+            
+            const query = { subCategory: category}
+            const result = await craftCollection.find(query).toArray();
             res.send(result)
         })
 
@@ -79,6 +89,36 @@ async function run() {
 
             res.send(result)
 
+        })
+
+
+        // Update Arts & Craft Item Data
+        app.put('/allCraftItems/:id', async(req, res) => {
+            const id = req.params.id;
+            const artsCraft = req.body;
+   
+
+
+            const query = { _id: new ObjectId(id)}
+            const option = { upsert: true};
+
+            const updateArtsCraftItem = {
+                $set: {
+                    itemeName: artsCraft.itemeName,
+                    subCategory: artsCraft.subCategory,
+                    price: artsCraft.price,
+                    rating: artsCraft.rating,
+                    customization: artsCraft.customization,
+                    processingTime: artsCraft.processingTime,
+                    stockStatus: artsCraft.stockStatus,
+                    imageUrl: artsCraft.imageUrl,
+                    shortDescription: artsCraft.shortDescription,
+                }
+            }
+
+            const result = await craftCollection.updateOne(query, updateArtsCraftItem, option)
+            res.send(result)
+            
         })
 
 
